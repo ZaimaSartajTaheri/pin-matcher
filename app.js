@@ -1,8 +1,15 @@
 let pinNumber;
 let count=0;
+let t;
+
+
 const generateBtn=document.querySelector(".generate-btn");
 const buttons=document.querySelectorAll(".button");
 const submitBtn=document.querySelector(".submit-btn");
+
+
+
+
 
 generateBtn.addEventListener("click",function(){
     
@@ -65,8 +72,13 @@ submitBtn.addEventListener("click",function(e){
         count=0;
         matchedMessage.style.display="block";
         notMatchedMessage.style.display="none";
-
+        document.querySelector("#four-digit").value="";
+        document.querySelector("#pin-number").value="";
         actionLeft.style.display="none";
+
+        setTimeout(function () {
+            matchedMessage.style.display="none";
+          }, 1000);
     
         
 
@@ -96,19 +108,44 @@ submitBtn.addEventListener("click",function(e){
 
     }
     else if(count==3){
-        
-        document.querySelector(".action-left").innerText="Sorry..try again by generating new pin :(";
+                document.querySelector(".generate-btn").disabled=true;
+                document.querySelector(".submit-btn").disabled=true;
+        const nowTime=Math.floor(((new Date().getTime())/1000));
+                let futureTime=nowTime+5;
+               function getRemainingTime()
+                {
+                    const presentTime=Math.floor((new Date().getTime())/1000);
+                    t=futureTime-presentTime;
+                   
+                    
+                   
+                    document.querySelector(".action-left").innerText=`try after ${t}seconds`;
+                    if(t<1){
+                        clearInterval(countdown);
+                        document.querySelector(".action-left").innerText="";
+                        document.querySelector("#notMatched").style.display="none";
+                        document.querySelector("#four-digit").value="";
+                        document.querySelector("#pin-number").value="";
+                        document.querySelector(".generate-btn").disabled=false;
+                        document.querySelector(".submit-btn").disabled=false;
+                        count=0;
+                    }
+                }
+                const countdown=setInterval(getRemainingTime,1000);
+                getRemainingTime();
 
-        e.currentTarget.disabled=true;
+
+                
 
 
     }
     
-    e.currentTarget.disabled=false;
+    
     
     
     
 });
+
 
 
 
